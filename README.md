@@ -4,7 +4,7 @@ We proposed a new framework to explore and search for the target in unknown envi
 
 **Author:** Haonan Luo, Yijie Zeng, Li Yang, Kexun Chen, Zhixuan Shen, Fengmao lv
 
-**Affiliation:** University of Groningen
+**Affiliation:** SouthWest Jiaotong University
 
 ## Visual-Language Aligned Information
 
@@ -23,7 +23,7 @@ tionality. In addition, we also obtain the semantic similarity of target object 
 the semantic similarity and the boundary descriptions, the agent can predict the long-term goals more accurately. Our experiments
 on the Gibson and HM3D datasets reveal that our VLAI approach yields significantly better results compared to earlier methods.
 
-[framework](frame.pdf)
+
 
 <!-- ## Requirements
 
@@ -86,7 +86,7 @@ pip install -r requirements.txt
 ### Setting up datasets
 The code requires the datasets in a `data` folder in the following format (same as habitat-lab):
 ```
-L3MVN/
+VLAI/
   data/
     scene_datasets/
     matterport_category_mappings.tsv

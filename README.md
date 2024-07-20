@@ -23,7 +23,7 @@ tionality. In addition, we also obtain the semantic similarity of target object 
 the semantic similarity and the boundary descriptions, the agent can predict the long-term goals more accurately. Our experiments
 on the Gibson and HM3D datasets reveal that our VLAI approach yields significantly better results compared to earlier methods.
 
-![image-20200706200822807](img/system.png)
+![image-20200706200822807](frame.pdf)
 
 <!-- ## Requirements
 

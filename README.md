@@ -6,16 +6,29 @@ We proposed a new framework to explore and search for the target in unknown envi
 
 **Affiliation:** University of Groningen
 
-## Frontier Semantic Exploration Framework
+## Visual-Language Aligned Information
 
-Visual target navigation in unknown environments is a crucial problem in robotics. Despite extensive investigation of classical and learning-based approaches in the past, robots lack common-sense knowledge about household objects and layouts. Prior state-of-the-art approaches to this task rely on learning the priors during the training and typically require significant expensive resources and time for  learning. To address this, we propose a new framework for visual target navigation that leverages Large Language Models (LLM) to impart common sense for object searching. Specifically, we introduce two paradigms: (i) zero-shot and (ii) feed-forward approaches that use language to find the relevant frontier from the semantic map as a long-term goal and explore the environment efficiently. Our analysis demonstrates the notable zero-shot generalization and transfer capabilities from the use of language. Experiments on Gibson and Habitat-Matterport 3D (HM3D) demonstrate that the proposed framework significantly outperforms existing map-based methods in terms of success rate and generalization. Ablation analysis also indicates that the common-sense knowledge from the language model leads to more efficient semantic exploration. Finally, we provide a real robot experiment to verify the applicability of our framework in real-world scenarios. The supplementary video and code can be accessed via the following link: https://sites.google.com/view/l3mvn.
+Object Goal Navigation(ObjectNav) is the task that an agent need navigate to an instance of a specific category in an unseen en-
+vironment through visual observations within limited time steps. This work can help people with disabilities expediently find and
+obtain the items they need. To achieve efficient ObjectNav in unfamiliar environments, global perception capabilities, understand-
+ing the regularities of space and semantics in the environment layout are significant. In this work, we propose an explicit-prediction
+method called VLAI that utilizes visual-language alignment information to guide the agent’s exploration, unlike previous navi-
+gation methods based on frontier potential prediction or egocentric map completion, which only leverage visual observations to
+construct semantic maps, thus failing to help the agent develop a better global perception. Specifically, when predicting long-term
+goals, we retrieve previously saved visual observations to obtain visual information around the frontiers based on their position on
+the incrementally built incomplete semantic map. Then, we apply our designed Chat Describer to these visual information to obtain
+detailed frontier object descriptions. The Chat Describer, a novel automatic-questioning approach deployed in Visual-to-Language,
+is composed of Large Language Model(LLM) and the visual-to-language model(VLM), which has visual question-answering func-
+tionality. In addition, we also obtain the semantic similarity of target object and frontier object categories. Ultimately, by combining
+the semantic similarity and the boundary descriptions, the agent can predict the long-term goals more accurately. Our experiments
+on the Gibson and HM3D datasets reveal that our VLAI approach yields significantly better results compared to earlier methods.
 
 ![image-20200706200822807](img/system.png)
 
 <!-- ## Requirements
 
 - Ubuntu 20.04
-- Python 3.7
+- Python 3.8
 - [habitat-lab](https://github.com/facebookresearch/habitat-lab) -->
 
 ## Installation
@@ -65,8 +78,8 @@ Download the [segmentation model](https://drive.google.com/file/d/1U0dS44DIPZ22n
 ## Setup
 Clone the repository and install other requirements:
 ```
-git clone https://github.com/ybgdgh/L3MVN
-cd L3MVN/
+git clone https://github.com/31539lab/VLAI
+cd VLAI/
 pip install -r requirements.txt
 ```
 
@@ -89,12 +102,5 @@ L3MVN/
 ### For evaluation: 
 For evaluating the pre-trained model:
 ```
-python main_llm_vis.py --split val --eval 1 --auto_gpu_config 0 \
--n 1 --num_eval_episodes 2000 --load pretrained_models/llm_model.pt \
---use_gtsem 0 --num_local_steps 10
+python main.py --split val --eval 1 --load pretrained/VLAI.pth
 ```
-
-
-## Demo Video
-
-[video](https://sites.google.com/view/l3mvn)

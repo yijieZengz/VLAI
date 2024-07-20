@@ -1,8 +1,8 @@
-# L3MVN: Leveraging Large Language Models for Visual Target Navigation
+# VLAI: Exploration and Exploitation based on Visual-Language Aligned Information for Robotic Object Goal Navigation
 
-This work is based on our paper. We proposed a new framework to explore and search for the target in unknown environment based on Large Language Model. Our work is based on [SemExp](https://github.com/devendrachaplot/Object-Goal-Navigation) and [llm_scene_understanding](https://github.com/neurips2020submission/invalid-action-masking), implemented in PyTorch.
+We proposed a new framework to explore and search for the target in unknown environment, Our work is based on [SemExp](https://github.com/devendrachaplot/Object-Goal-Navigation) implemented in PyTorch.
 
-**Author:** Bangguo Yu, Hamidreza Kasaei and Ming Cao
+**Author:** Haonan Luo, Yijie Zeng, Li Yang, Kexun Chen, Zhixuan Shen, Fengmao lv
 
 **Affiliation:** University of Groningen
 

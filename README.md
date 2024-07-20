@@ -1,84 +1,100 @@
-This repository contains:
-Episode train and test datasets for Object Goal Navigation task for the Gibson dataset in the Habitat Simulator.
-The code to train and evaluate the Semantic Exploration (SemExp) model on the Object Goal Navigation task.
-Pretrained SemExp model.
-This repository contains:
-Episode train and test datasets for Object Goal Navigation task for the Gibson dataset in the Habitat Simulator.
-The code to train and evaluate the Semantic Exploration (SemExp) model on the Object Goal Navigation task.
-Pretrained SemExp model.
-Installing Dependencies
-We use earlier versions of habitat-sim and habitat-lab as specified below:
-Installing habitat-sim:
+# L3MVN: Leveraging Large Language Models for Visual Target Navigation
 
+This work is based on our paper. We proposed a new framework to explore and search for the target in unknown environment based on Large Language Model. Our work is based on [SemExp](https://github.com/devendrachaplot/Object-Goal-Navigation) and [llm_scene_understanding](https://github.com/neurips2020submission/invalid-action-masking), implemented in PyTorch.
+
+**Author:** Bangguo Yu, Hamidreza Kasaei and Ming Cao
+
+**Affiliation:** University of Groningen
+
+## Frontier Semantic Exploration Framework
+
+Visual target navigation in unknown environments is a crucial problem in robotics. Despite extensive investigation of classical and learning-based approaches in the past, robots lack common-sense knowledge about household objects and layouts. Prior state-of-the-art approaches to this task rely on learning the priors during the training and typically require significant expensive resources and time for  learning. To address this, we propose a new framework for visual target navigation that leverages Large Language Models (LLM) to impart common sense for object searching. Specifically, we introduce two paradigms: (i) zero-shot and (ii) feed-forward approaches that use language to find the relevant frontier from the semantic map as a long-term goal and explore the environment efficiently. Our analysis demonstrates the notable zero-shot generalization and transfer capabilities from the use of language. Experiments on Gibson and Habitat-Matterport 3D (HM3D) demonstrate that the proposed framework significantly outperforms existing map-based methods in terms of success rate and generalization. Ablation analysis also indicates that the common-sense knowledge from the language model leads to more efficient semantic exploration. Finally, we provide a real robot experiment to verify the applicability of our framework in real-world scenarios. The supplementary video and code can be accessed via the following link: https://sites.google.com/view/l3mvn.
+
+![image-20200706200822807](img/system.png)
+
+<!-- ## Requirements
+
+- Ubuntu 20.04
+- Python 3.7
+- [habitat-lab](https://github.com/facebookresearch/habitat-lab) -->
+
+## Installation
+
+The code has been tested only with Python 3.7 on Ubuntu 20.04.
+
+1. Installing Dependencies
+- We use challenge-2022 versions of [habitat-sim](https://github.com/facebookresearch/habitat-sim) and [habitat-lab](https://github.com/facebookresearch/habitat-lab) as specified below:
+
+- Installing habitat-sim:
+```
 git clone https://github.com/facebookresearch/habitat-sim.git
-cd habitat-sim; git checkout tags/v0.1.5; 
+cd habitat-sim; git checkout tags/challenge-2022; 
 pip install -r requirements.txt; 
 python setup.py install --headless
 python setup.py install # (for Mac OS)
-Installing habitat-lab:
+```
 
+- Installing habitat-lab:
+```
 git clone https://github.com/facebookresearch/habitat-lab.git
-cd habitat-lab; git checkout tags/v0.1.5; 
+cd habitat-lab; git checkout tags/challenge-2022; 
 pip install -e .
-Check habitat installation by running python examples/benchmark.py in the habitat-lab folder.
+```
 
-Install pytorch according to your system configuration. The code is tested on pytorch v1.6.0 and cudatoolkit v10.2. If you are using conda:
-conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 #(Linux with GPU)
-conda install pytorch==1.6.0 torchvision==0.7.0 -c pytorch #(Mac OS)
-Install detectron2 according to your system configuration. If you are using conda:
-python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu102/torch1.6/index.html #(Linux with GPU)
-CC=clang CXX=clang++ ARCHFLAGS="-arch x86_64" python -m pip install 'git+https://github.com/facebookresearch/detectron2.git' #(Mac OS)
-Docker and Singularity images:
-We provide experimental docker and singularity images with all the dependencies installed, see Docker Instructions.
+- Install [pytorch](https://pytorch.org/) according to your system configuration. The code is tested on pytorch v1.7.0 and cudatoolkit v11.4. If you are using conda:
+```
+conda install pytorch==1.7.0 torchvision==0.8.1 cudatoolkit=11.4 #(Linux with GPU)
+conda install pytorch==1.7.0 torchvision==0.8.1 -c pytorch #(Mac OS)
+```
 
-Setup
+- Install [detectron2](https://github.com/facebookresearch/detectron2/) according to your system configuration. 
+
+2. Download HM3D datasets:
+
+#### Habitat Matterport
+Download [HM3D](https://aihabitat.org/datasets/hm3d/) dataset using download utility and [instructions](https://github.com/facebookresearch/habitat-sim/blob/089f6a41474f5470ca10222197c23693eef3a001/datasets/HM3D.md):
+```
+python -m habitat_sim.utils.datasets_download --username <api-token-id> --password <api-token-secret> --uids hm3d_minival
+```
+
+3. Download additional datasets
+
+Download the [segmentation model](https://drive.google.com/file/d/1U0dS44DIPZ22nTjw0RfO431zV-lMPcvv/view?usp=share_link) in RedNet/model path.
+
+
+## Setup
 Clone the repository and install other requirements:
-
-git clone https://github.com/devendrachaplot/Object-Goal-Navigation/
-cd Object-Goal-Navigation/;
+```
+git clone https://github.com/ybgdgh/L3MVN
+cd L3MVN/
 pip install -r requirements.txt
-Downloading scene dataset
-Download the Gibson dataset using the instructions here: https://github.com/facebookresearch/habitat-lab#scenes-datasets (download the 11GB file gibson_habitat_trainval.zip)
-Move the Gibson scene dataset or create a symlink at data/scene_datasets/gibson_semantic.
-Downloading episode dataset
-Download the episode dataset:
-wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1tslnZAkH8m3V5nP8pbtBmaR2XEfr8Rau' -O objectnav_gibson_v1.1.zip
-Unzip the dataset into data/datasets/objectnav/gibson/v1.1/
-Setting up datasets
-The code requires the datasets in a data folder in the following format (same as habitat-lab):
+```
 
-Object-Goal-Navigation/
+### Setting up datasets
+The code requires the datasets in a `data` folder in the following format (same as habitat-lab):
+```
+L3MVN/
   data/
     scene_datasets/
-      gibson_semantic/
-        Adrian.glb
-        Adrian.navmesh
-        ...
-    datasets/
-      objectnav/
-        gibson/
-          v1.1/
-            train/
-            val/
-Test setup
-To verify that the data is setup correctly, run:
+    matterport_category_mappings.tsv
+    object_norm_inv_perplexity.npy
+    versioned_data
+    objectgoal_hm3d/
+        train/
+        val/
+        val_mini/
+```
 
-python test.py --agent random -n1 --num_eval_episodes 1 --auto_gpu_config 0
-Usage
-Training:
-For training the SemExp model on the Object Goal Navigation task:
 
-python main.py
-Downloading pre-trained models
-mkdir pretrained_models;
-wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=171ZA7XNu5vi3XLpuKs8DuGGZrYyuSjL0' -O pretrained_models/sem_exp.pth
-For evaluation:
+### For evaluation: 
 For evaluating the pre-trained model:
+```
+python main_llm_vis.py --split val --eval 1 --auto_gpu_config 0 \
+-n 1 --num_eval_episodes 2000 --load pretrained_models/llm_model.pt \
+--use_gtsem 0 --num_local_steps 10
+```
 
-python main.py --split val --eval 1 --load pretrained_models/sem_exp.pth
-For visualizing the agent observations and predicted semantic map, add -v 1 as an argument to the above command.
 
-The pre-trained model should get 0.657 Success, 0.339 SPL and 1.474 DTG.
+## Demo Video
 
-For more detailed instructions, see INSTRUCTIONS.
-
+[video](https://sites.google.com/view/l3mvn)
